@@ -23,13 +23,13 @@ module.exports = function(grunt) {
 				dest: 'build/core.js'
 			}
 		},
-//		watch: {
-//			files: ['source/*.js', "Gruntfile.js"],
-//			tasks: ['default'],
-//			options: {
-//				spawn: false
-//			}
-//		},
+		watch: {
+			files: ['source/*.class.js', "Gruntfile.js"],
+			tasks: ['default'],
+			options: {
+				spawn: false
+			}
+		},
 		requirejs: {
 			"compile-main-local": {
 				options: {
@@ -65,10 +65,45 @@ module.exports = function(grunt) {
 					}
 				]
 			}
+		},
+		bower: {
+			install: {
+				options: {
+					targetDir: 'source/libs',
+					copy: false,
+					install: true,
+					bowerOptions: {},
+					verbose: true,
+					cleanBowerDir: false,
+					cleanTargetDir: false
+				}
+			}
 		}
 	});
 
-	grunt.registerTask('default', ['requirejs:compile-main-local', 'replace', 'concat:local', 'copy']);
+	//таска для разработки.
+	// Собираем файлы приложения в один, с учетом локальных зависимостей;
+	//конфигурирем приложение; собираем приложение и библиотеки в один файл;
+	//выкладываем итоговую сборку на место, где ее подтянет requirejs
+	grunt.registerTask(
+		'default',
+		[
+			'requirejs:compile-main-local',
+			'replace',
+			'concat:local',
+			'copy'
+		]
+	);
+
+	//таска для начала разработки: скачиваем библиотеки зависимостей,
+	//запускаем наблюдателя для пересборки проекта на лету
+	grunt.registerTask(
+		'start',
+		[
+			'bower:install',
+			'watch'
+		]
+	);
 
 
 };

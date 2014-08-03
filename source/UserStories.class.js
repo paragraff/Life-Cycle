@@ -24,7 +24,7 @@ var UserStories_class = new Class({
 
 		this._url.setData({
 			"format": this.options.format,
-			"take": 500
+			"take": this.options.limit
 		});
 
 	},
