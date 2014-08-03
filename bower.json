@@ -1,6 +1,6 @@
 {
   "name": "Life cycle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/paragraff/Life-Cycle",
   "authors": [
     "Ковтюх Александр <gutkiy.shtryk@gmail.com>"
@@ -10,9 +10,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-	"mootools-more": "~1.5.0",
-	"requirejs": "latest",
-    "mootools": "~1.5.0"
-
+	"requirejs": "latest"
   }
 }

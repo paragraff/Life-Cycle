@@ -101,6 +101,7 @@ module.exports = function(grunt) {
 		'start',
 		[
 			'bower:install',
+			'default',
 			'watch'
 		]
 	);

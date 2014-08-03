@@ -1,4 +1,4 @@
-source/libs
+source/libs/**/
 build
 node_modules
 app_config.json
