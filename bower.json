@@ -1,0 +1,17 @@
+{
+  "name": "Life cycle",
+  "version": "0.0.1",
+  "homepage": "https://github.com/paragraff/TPAnalize",
+  "authors": [
+    "Ковтюх Александр <gutkiy.shtryk@gmail.com>"
+  ],
+  "description": "Project for visulize user stories life cycle",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+	"requirejs": "latest",
+    "mootools": "~1.5.0",
+    "mootools-more": "~1.5.0"
+  }
+}

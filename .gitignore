@@ -1,0 +1,7 @@
+source/libs
+build
+node_modules
+app_config.json
+npm-debug.log
+.grunt
+core.js
