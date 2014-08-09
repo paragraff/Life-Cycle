@@ -1,6 +1,7 @@
 source/libs/**/
 build
 node_modules
+result
 app_config.json
 npm-debug.log
 .grunt

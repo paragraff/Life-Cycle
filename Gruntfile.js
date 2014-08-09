@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: ['source/*.class.js', "Gruntfile.js"],
+			files: ['source/*.class.js', "*.js"],
 			tasks: ['default'],
 			options: {
 				spawn: false
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 		copy: {
 			main: {
 				src: 'build/core.js',
-				dest: 'core.js'
+				dest: 'result/core.js'
 			}
 		},
 		replace: {
@@ -78,7 +78,8 @@ module.exports = function(grunt) {
 					cleanTargetDir: false
 				}
 			}
-		}
+		},
+		clean: ['build']
 	});
 
 	//таска для разработки.
@@ -91,11 +92,13 @@ module.exports = function(grunt) {
 			'requirejs:compile-main-local',
 			'replace',
 			'concat:local',
-			'copy'
+			'copy',
+			'clean'
 		]
 	);
 
 	//таска для начала разработки: скачиваем библиотеки зависимостей,
+	//собираем проект,
 	//запускаем наблюдателя для пересборки проекта на лету
 	grunt.registerTask(
 		'start',
