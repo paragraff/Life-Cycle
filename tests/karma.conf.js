@@ -3,12 +3,6 @@ module.exports = function (config) {
 		basePath: '../',
 		frameworks: ['mocha', 'requirejs', 'expect', 'sinon'],
 		browsers: ['PhantomJS', 'Chrome'],
-		client: {
-			mocha: {
-				ui: 'bdd',
-				reporter: 'nyan'
-			}
-		},
 		files: [
 			'source/libs/*.js',
 			'tests/main.require.js',
@@ -16,7 +10,7 @@ module.exports = function (config) {
 			{pattern: 'tests/*.test.js', included: false}
 		],
 		reporters: ['mocha'],
-		singleRun: false,
+		singleRun: true,
 		autoWatch: false,
 		logLevel: 'ERROR'
 	})

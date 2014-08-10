@@ -24,8 +24,8 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: ['source/*.class.js', "*.js"],
-			tasks: ['default'],
+			files: ['source/*.class.js','tests/*.test.js' ,"*.js"],
+			tasks: ['default', 'test-run'],
 			options: {
 				spawn: false
 			}
@@ -81,8 +81,16 @@ module.exports = function(grunt) {
 		},
 		clean: ['build'],
 		karma: {
-			unit: {
+			options: {
 				configFile: 'tests/karma.conf.js'
+			},
+			continuous: {
+				singleRun: false
+			},
+			dev: {
+				browser: ['PhantomJS'],
+				singleRun: false,
+				background: true
 			}
 		}
 	});
@@ -102,13 +110,21 @@ module.exports = function(grunt) {
 		]
 	);
 
-	//таска для начала разработки: скачиваем библиотеки зависимостей,
+	//вынес запуск юнит-тестов в отдельную таску из-за того, что запускать
+	//карма-сервер и проверяльщика нужно раздельно. Так проверяльщик запустится
+	//первый раз не после старта сервера, а после изменения файла.
+	grunt.registerTask(
+		'test-run', ['karma:dev:run']
+	);
+
+	//таска для начала разработки:
+	//стартуем сервер автоматизации юнит-тестирования
 	//собираем проект,
 	//запускаем наблюдателя для пересборки проекта на лету
 	grunt.registerTask(
 		'start',
 		[
-			'bower:install',
+			'karma:dev:start',
 			'default',
 			'watch'
 		]
