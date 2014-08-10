@@ -79,7 +79,12 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		clean: ['build']
+		clean: ['build'],
+		karma: {
+			unit: {
+				configFile: 'tests/karma.conf.js'
+			}
+		}
 	});
 
 	//таска для разработки.
