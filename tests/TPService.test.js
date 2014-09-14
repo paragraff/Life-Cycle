@@ -1,10 +1,10 @@
-define(['source/UserStories.class'], function(UserStories_class) {
+define(['source/TPService.class'], function(TPService_class) {
 
-describe("UserStories tests", function () {
+describe("TPService tests", function () {
 
 	beforeEach(function () {
 
-		this.user_stories = new UserStories_class();
+		this.user_stories = new TPService_class();
 
 	});
 
@@ -24,6 +24,7 @@ describe("UserStories tests", function () {
 			и получаем результат после обработки его тестируемым классом
 			*/
 			json_response = null;
+
 			this.jsonp_stub = sinon.stub(
 				Request.JSONP.prototype,
 				"getScript",
@@ -46,10 +47,17 @@ describe("UserStories tests", function () {
 		});
 
 		it("по вызову get, отправляется запрос на нужный адрес", function () {
+
 			json_response = [{Items:[]}];
-			this.user_stories.get(Function.from(), "Id eq 13", "[Id]");
+
+			this.user_stories.get("UserStories", Function.from(), "Id eq 13", "[Id]");
+
 			var url = new URI(this.jsonp_initialize.firstCall.args[0].url);
+
 			expect(url.get('host')).to.be('owox.tpondemand.com');
+
+			expect(url.get('directory')).to.be('/api/v1/UserStories/');
+
 		});
 
 		it(
@@ -57,7 +65,7 @@ describe("UserStories tests", function () {
 			function () {
 				json_response = [{Items:[]}];
 				var callback_spy = sinon.spy();
-				this.user_stories.get(callback_spy, "Id eq 13", "[Id]");
+				this.user_stories.get("UserStories", callback_spy, "Id eq 13", "[Id]");
 				expect(callback_spy.calledWith({stories:[]})).to.be.ok();
 			}
 		);
@@ -75,7 +83,7 @@ describe("UserStories tests", function () {
 					}
 				];
 				var callback_spy = sinon.spy();
-				this.user_stories.get(callback_spy, "Id eq 13", "[Id]");
+				this.user_stories.get("UserStories", callback_spy, "Id eq 13", "[Id]");
 				//с сервера получены все три сущности
 				expect(callback_spy.firstCall.args[0].stories.length).to.be(3);
 				//сущности были получены в два захода
