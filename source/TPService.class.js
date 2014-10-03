@@ -1,12 +1,12 @@
 define([], function () {
 	'use strict';
 
-	var TPService_class = new Class({
+	var TPServiceClass = new Class({
 
 		Implements: [Options, Events],
 
 		options: {
-			url: "https://owox.tpondemand.com/api/v1/",
+			url: 'https://owox.tpondemand.com/api/v1/',
 			token: '@@config_auth_token',
 			format: 'json',
 			limit: 500
@@ -19,15 +19,23 @@ define([], function () {
 			this._url = new URI(this.options.url);
 
 			this._url.setData({
-				"format": this.options.format,
-				"take": this.options.limit
+				format: this.options.format,
+				take: this.options.limit
 			});
 
 		},
 
-		get: function (entity_name, callback, where, fields) {
+		/**
+		 * Метод вызовет переданный коллбек с набором сущностей, удовлетворяющим условиям выборки
+		 * @public
+		 * @param {string} entityName Название сущности (UserStory, Project, etc)
+		 * @param {function} callback Функция, которая будет вызвана после получения набора
+		 * @param {string} where строка условий выборки, согласно REST API сервиса (http://dev.targetprocess.com/rest/response_format)
+		 * @param {Array.<string>} fields набор полей сущности для возврата
+		 */
+		get: function (entityName, callback, where, fields) {
 
-			this._url.set('directory', this._url.get('directory') + entity_name + '/');
+			this._url.set('directory', this._url.get('directory') + entityName + '/');
 
 			var uri = new URI(this._url.toString()),
 				entities = [];
@@ -47,52 +55,52 @@ define([], function () {
 			new Request.JSONP({
 				headers: this.options.headers,
 				action: action,
-				url: new URI(url).setData("token", this.options.token).toString(),
+				url: new URI(url).setData('token', this.options.token).toString(),
 				callbackKey: 'callback',
 				onComplete: callback
 			}).send();
 
 		},
 
-		_getPart: function (url, all_stories) {
+		_getPart: function (url, allStories) {
 
 			if (url) {
 
 				this._requestData(
 					url,
-					"get",
-					function (part_stories) {
+					'get',
+					function (partStories) {
 
-						var next_url = undefined, data_url;
+						var nextUrl = undefined, dataUrl;
 
-						if (part_stories.Next) {
+						if (partStories.Next) {
 
 							/* у TP eсть привычка тулить каллбек функцию в Next,
-							 а у mootools привычка тулить разные коллбеки для
-							 каждого запроса. Приходится вырезать из Next вызов
-							 коллбека, потому что mootools сам добавляет свой
-							 вызов.
-							 * */
-							next_url = new URI(part_stories.Next);
+							а у mootools привычка тулить разные коллбеки для
+							каждого запроса. Приходится вырезать из Next вызов
+							коллбека, потому что mootools сам добавляет свой
+							вызов.
+							*/
+							nextUrl = new URI(partStories.Next);
 
-							data_url = next_url.getData();
+							dataUrl = nextUrl.getData();
 
-							delete data_url.callback;
+							delete dataUrl.callback;
 
-							next_url.setData(data_url, false);
+							nextUrl.setData(dataUrl, false);
 
 						}
 
-						all_stories.append(part_stories.Items);
+						allStories.append(partStories.Items);
 
-						this._getPart(next_url, all_stories);
+						this._getPart(nextUrl, allStories);
 
 					}.bind(this)
 				);
 
 			} else {
 
-				this.fireEvent('_allPart', {stories:all_stories});
+				this.fireEvent('_allPart', {stories:allStories});
 
 			}
 
@@ -100,6 +108,6 @@ define([], function () {
 
 	});
 
-	return TPService_class;
+	return TPServiceClass;
 
 });

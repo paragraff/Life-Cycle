@@ -14,6 +14,16 @@ module.exports = function(grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 
+		jscs: {
+			src:  "source/*.js",
+			options: {
+				"config": ".jscsconf",
+				"additionalRules": [
+					"node_modules/jscs-jsdoc/lib/rules/*.js"
+				],
+				"reporter": "inline"
+			}
+		},
 		concat: {
 			options: {
 				separator: ';'
@@ -110,17 +120,17 @@ module.exports = function(grunt) {
 		]
 	);
 
-	//вынес запуск юнит-тестов в отдельную таску из-за того, что запускать
+	//вынес запуск тестов в отдельную таску из-за того, что запускать
 	//карма-сервер и проверяльщика нужно раздельно. Так проверяльщик запустится
 	//первый раз не после старта сервера, а после изменения файла.
 	grunt.registerTask(
-		'test-run', ['karma:dev:run']
+		'test-run', ['jscs','karma:dev:run']
 	);
 
 	//таска для начала разработки:
 	//стартуем сервер автоматизации юнит-тестирования
 	//собираем проект,
-	//запускаем наблюдателя для пересборки проекта на лету
+	//запускаем наблюдателя для пересборки и проверки проекта на лету
 	grunt.registerTask(
 		'start',
 		[
